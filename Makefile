@@ -1,3 +1,4 @@
 test:
 	echo "HEY!"
-	cd ../ && ls
+	cd ../ && ls; \
+	read -p "Enter something"
