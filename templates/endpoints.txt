@@ -1,28 +1,25 @@
-// MakeBarEndpoint - returns endpoint to bar function
+// MakeBarEndpoint - returns endpoint for bar
 func MakeBarEndpoint(
 	s Service,
 	l log.Logger,
-	mw []endpoint.Middleware,
+	c *models.Config,
 ) endpoint.Endpoint {
-
 	var e endpoint.Endpoint
-	e = makeBarEndpoint(s)
-	// add middlewares
-	for _, m := range mw {
-		e = m(e)
+	{
+		e = func(ctx context.Context, request interface{}) (interface{}, error) {
+			req, ok := request.(models.BarRequest)
+			if !ok {
+				return nil, ErrBadRequest
+			}
+			return s.Bar(ctx, req)
+		}
+		//e = AuthMiddleware([]string{"test"}, "test", c.PublicKey)(e)
+		e = LoggingMiddleware(log.With(l, "method", "bar"))(e)
 	}
-	e = LoggingMiddleware(log.With(l, "method", "Bar"))(e)
 	return e
 }
 
-func makeBarEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req, ok := request.(models.BarRequest)
-		if !ok {
-			return nil, ErrBadRequest
-		}
-		return s.Bar(ctx, req)
-	}
-}
-
 // endpoints.txt
+
+
+

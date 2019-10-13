@@ -21,4 +21,4 @@ func (i instrumentingMiddleware) Bar (
 	return i.next.Bar(ctx, request)
 }
 
-//instrumenting.txt
+// instrumenting.txt
