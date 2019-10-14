@@ -1,6 +1,6 @@
 // routes - start
 bar := kithttp.NewServer(
-  MakeBarEndpoint(s, logger, mw),
+  MakeBarEndpoint(s, logger, c),
   decodeBarRequest,
   encodeResponse,
   options...,
